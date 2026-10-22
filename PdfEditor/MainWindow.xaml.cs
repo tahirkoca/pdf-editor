@@ -19,8 +19,26 @@ public partial class MainWindow : FluentWindow
     public MainWindow()
     {
         InitializeComponent();
+        FitToWorkArea();
         Loaded += MainWindow_Loaded;
         Closing += MainWindow_Closing;
+    }
+
+    /// <summary>
+    /// XAML'daki boyutlar küçük ekranlarda / yüksek ölçeklemede (ör. %150) çalışma alanını aşar;
+    /// pencereyi ve minimum boyutları ekranın kullanılabilir alanına sığdırır.
+    /// </summary>
+    private void FitToWorkArea()
+    {
+        const double maxRatio = 0.9;
+        var area = SystemParameters.WorkArea;
+        var maxWidth = area.Width * maxRatio;
+        var maxHeight = area.Height * maxRatio;
+
+        MinWidth = Math.Min(MinWidth, maxWidth);
+        MinHeight = Math.Min(MinHeight, maxHeight);
+        Width = Math.Min(Width, maxWidth);
+        Height = Math.Min(Height, maxHeight);
     }
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)

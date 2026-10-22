@@ -8,6 +8,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <AssemblyName>PdfEditor</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- WPF uygulaması: DPI ayarı manifest üzerinden yapılır, WinForms SetHighDpiMode kullanılmaz -->
+    <NoWarn>$(NoWarn);WFAC010</NoWarn>
     <Product>PDF Editor</Product>
     <AssemblyTitle>PDF Editor</AssemblyTitle>
     <Description>HTML'den PDF'e dönüştürme ve PDF temizleme</Description>
