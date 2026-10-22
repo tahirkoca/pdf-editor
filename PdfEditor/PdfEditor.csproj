@@ -8,6 +8,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <AssemblyName>PdfEditor</AssemblyName>
+    <Product>PDF Editor</Product>
+    <AssemblyTitle>PDF Editor</AssemblyTitle>
+    <Description>HTML'den PDF'e dönüştürme ve PDF temizleme</Description>
+    <Company>Tahir Koca</Company>
+    <Copyright>Copyright (c) 2026 Tahir Koca</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
