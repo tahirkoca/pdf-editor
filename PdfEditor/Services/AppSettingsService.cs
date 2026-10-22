@@ -1,29 +1,33 @@
 using System.IO;
 using System.Text.Json;
-using ConvertHtml2Pdf.Models;
+using PdfEditor.Core.Html;
 
-namespace ConvertHtml2Pdf.Services;
+namespace PdfEditor.Services;
 
 /// <summary>
-/// Son kullanılan klasörleri ve PDF ayarlarını saklar (AppData).
+/// Son kullanılan klasörleri, PDF ayarlarını ve temizleyici tercihlerini saklar (AppData).
 /// </summary>
 public class AppSettingsService
 {
-    private static string SettingsPath =>
-        Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "ConvertHtml2Pdf",
-            "settings.json");
+    private static string SettingsDir(string app) =>
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), app);
+
+    private static string SettingsPath => Path.Combine(SettingsDir("PdfEditor"), "settings.json");
+
+    private static string LegacySettingsPath => Path.Combine(SettingsDir("ConvertHtml2Pdf"), "settings.json");
 
     public string? LastHtmlPath { get; set; }
     public string? LastOutputPath { get; set; }
     public PdfConversionOptions PdfOptions { get; set; } = new();
+    public string? LastCleanerPath { get; set; }
+    public string? CleanerOutputPath { get; set; }
+    public string? CleanerFontPath { get; set; }
 
     public static AppSettingsService Load()
     {
         try
         {
-            var path = SettingsPath;
+            var path = File.Exists(SettingsPath) ? SettingsPath : LegacySettingsPath;
             if (!File.Exists(path))
                 return new AppSettingsService();
 
@@ -41,7 +45,10 @@ public class AppSettingsService
                     PaperFormat = dto.PaperFormat ?? "A4",
                     MarginCm = dto.MarginCm,
                     Landscape = dto.Landscape
-                }
+                },
+                LastCleanerPath = dto.LastCleanerPath,
+                CleanerOutputPath = dto.CleanerOutputPath,
+                CleanerFontPath = dto.CleanerFontPath
             };
         }
         catch
@@ -64,7 +71,10 @@ public class AppSettingsService
                 LastOutputPath = LastOutputPath,
                 PaperFormat = PdfOptions.PaperFormat,
                 MarginCm = PdfOptions.MarginCm,
-                Landscape = PdfOptions.Landscape
+                Landscape = PdfOptions.Landscape,
+                LastCleanerPath = LastCleanerPath,
+                CleanerOutputPath = CleanerOutputPath,
+                CleanerFontPath = CleanerFontPath
             };
             var json = JsonSerializer.Serialize(dto, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(SettingsPath, json);
@@ -82,5 +92,8 @@ public class AppSettingsService
         public string? PaperFormat { get; set; }
         public double MarginCm { get; set; } = 1.0;
         public bool Landscape { get; set; }
+        public string? LastCleanerPath { get; set; }
+        public string? CleanerOutputPath { get; set; }
+        public string? CleanerFontPath { get; set; }
     }
 }

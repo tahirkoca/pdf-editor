@@ -1,17 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
+    <RootNamespace>PdfEditor.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MuPDF.NET" Version="3.28.2.4" />
     <PackageReference Include="PuppeteerSharp" Version="24.39.0" />
-    <PackageReference Include="WPF-UI" Version="4.2.0" />
   </ItemGroup>
 
 </Project>

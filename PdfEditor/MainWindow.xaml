@@ -1,0 +1,34 @@
+<ui:FluentWindow x:Class="PdfEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:views="clr-namespace:PdfEditor.Views"
+        Title="PDF Editor"
+        Height="900"
+        Width="1320"
+        MinHeight="720"
+        MinWidth="1000"
+        WindowStartupLocation="CenterScreen"
+        WindowBackdropType="Mica"
+        ExtendsContentIntoTitleBar="True"
+        AllowDrop="True"
+        Drop="Window_Drop"
+        DragOver="Window_DragOver">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0" Title="PDF Editor" />
+
+        <TabControl x:Name="Tabs" Grid.Row="1" Margin="12,0,12,12">
+            <TabItem Header="HTML → PDF">
+                <views:HtmlToPdfView x:Name="HtmlView" />
+            </TabItem>
+            <TabItem Header="PDF Temizle">
+                <views:CleanerView x:Name="CleanerView" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</ui:FluentWindow>

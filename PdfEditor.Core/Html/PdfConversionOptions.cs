@@ -1,4 +1,4 @@
-namespace ConvertHtml2Pdf.Models;
+namespace PdfEditor.Core.Html;
 
 /// <summary>
 /// PDF çıktı ayarları (sayfa boyutu, kenar boşluğu, yön).

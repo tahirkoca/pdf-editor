@@ -1,51 +1,26 @@
-<ui:FluentWindow x:Class="ConvertHtml2Pdf.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        xmlns:local="clr-namespace:ConvertHtml2Pdf"
-        mc:Ignorable="d"
-        Title="HTML → PDF Dönüştürücü"
-        Height="780"
-        Width="680"
-        MinHeight="780"
-        MaxHeight="780"
-        MinWidth="680"
-        MaxWidth="680"
-        ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"
-        WindowBackdropType="Mica"
-        ExtendsContentIntoTitleBar="True"
-        AllowDrop="True"
-        Drop="Window_Drop"
-        DragOver="Window_DragOver">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <ui:TitleBar Grid.Row="0" Title="HTML → PDF Dönüştürücü" />
-
-        <Grid Grid.Row="1" Margin="24,16">
+<UserControl x:Class="PdfEditor.Views.HtmlToPdfView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="24,16" MaxWidth="680" HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- HTML kaynağı -->
-            <ui:Card Grid.Row="0" Margin="0,0,0,16" Padding="20" x:Name="HtmlSourceCard">
+            <ui:Card Grid.Row="0" Margin="0,0,0,16" Padding="20">
                 <StackPanel>
                     <TextBlock Text="HTML kaynağı" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,4" />
                     <TextBlock Text="Dosya veya klasörü buraya sürükleyebilirsiniz"
-                              FontSize="12"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              Margin="0,0,0,12" />
+                               FontSize="12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Margin="0,0,0,12" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -113,22 +88,19 @@
                     <ui:Button x:Name="ConvertButton" Content="PDF'e Dönüştür" Appearance="Primary" HorizontalAlignment="Stretch" Click="Convert_Click" Margin="0,0,0,12" />
                     <ProgressBar x:Name="ProgressBar" Height="6" Minimum="0" Maximum="100" Value="0" Visibility="Collapsed" Margin="0,0,0,8" />
                     <TextBlock x:Name="StatusTextBlock" Text="" FontSize="13" TextWrapping="Wrap" Visibility="Collapsed" />
+                    <ui:Button x:Name="OpenInCleanerButton" Content="Oluşan PDF'leri temizleyicide aç" HorizontalAlignment="Stretch"
+                               Visibility="Collapsed" Click="OpenInCleaner_Click" />
                 </StackPanel>
             </ui:Card>
 
-            <!-- Dönüştürme sonucu (kalan alanı doldurur, scroll yok) -->
-            <ui:Card Grid.Row="4" Margin="0,0,0,16" Padding="20" x:Name="ResultCard">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="Dönüştürme sonucu" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8" />
+            <!-- Dönüştürme sonucu -->
+            <ui:Card Grid.Row="4" Margin="0,0,0,16" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="Dönüştürme sonucu" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8" />
                     <ListView x:Name="ResultListView"
-                              Grid.Row="1"
                               BorderThickness="0"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                              ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                              MinHeight="120"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Dosya" Width="220" DisplayMemberBinding="{Binding FileName}" />
@@ -136,12 +108,12 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                </Grid>
+                </StackPanel>
             </ui:Card>
 
             <!-- Durum / bilgi mesajı -->
             <ui:InfoBar Grid.Row="5" x:Name="MessageInfoBar"
                         IsOpen="False" IsClosable="True" Title="Bilgi" Message="" Severity="Informational" />
         </Grid>
-    </Grid>
-</ui:FluentWindow>
+    </ScrollViewer>
+</UserControl>

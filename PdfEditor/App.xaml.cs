@@ -1,4 +1,4 @@
-namespace ConvertHtml2Pdf;
+﻿namespace PdfEditor;
 
 /// <summary>
 /// Interaction logic for App.xaml

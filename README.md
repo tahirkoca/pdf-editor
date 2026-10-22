@@ -1,12 +1,12 @@
 <p align="center">
-  <strong>HTML → PDF</strong><br>
-  <sub>WPF • Fluent Design • .NET 8</sub>
+  <strong>PDF Editor</strong><br>
+  <sub>HTML → PDF • PDF temizleme • WPF • Fluent Design • .NET 8</sub>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/.NET-8-512BD4?style=flat-square&logo=dotnet" alt=".NET 8">
   <img src="https://img.shields.io/badge/Windows-WPF-0078D4?style=flat-square&logo=windows" alt="WPF">
-  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="MIT">
+  <img src="https://img.shields.io/badge/License-AGPL--3.0-blue?style=flat-square" alt="AGPL-3.0">
 </p>
 
 ---
@@ -19,17 +19,34 @@
 
 ### 🇹🇷 Türkçe
 
-**HTML → PDF Dönüştürücü**, HTML dosyalarını PDF'e çeviren masaüstü uygulamasıdır. WPF ve Fluent Design (WPF-UI) ile Windows 11 tarzında arayüz sunar; dönüştürme işlemi PuppeteerSharp (headless Chromium) ile yapılır.
+**PDF Editor**, iki aracı tek pencerede birleştiren bir masaüstü uygulamasıdır:
 
-#### Özellikler
+- **HTML → PDF**: HTML dosyalarını PuppeteerSharp (headless Chromium) ile PDF'e çevirir.
+- **PDF Temizle**: Herhangi bir PDF'teki watermark'ları, sayfalarda tekrarlanan logoları ve başlık/altbilgi yazılarını bulur; seçtiklerinizi siler ya da yazıyı değiştirir. Orijinal dosya hiçbir zaman değiştirilmez.
+
+#### HTML → PDF
 
 | Özellik | Açıklama |
 |--------|----------|
 | **Toplu dönüştürme** | Tek dosya veya klasör seçerek tüm `.html` / `.htm` dosyalarını PDF'e çevirir. |
-| **Sürükle-bırak** | Dosya veya klasörü pencereye sürükleyip bırakarak kaynak seçebilirsiniz. |
+| **Sürükle-bırak** | Dosya veya klasörü pencereye sürükleyip bırakabilirsiniz. |
 | **PDF ayarları** | Sayfa boyutu (A4, Letter, A3, A5, Legal), kenar boşluğu (0,5–2 cm), yatay sayfa. |
-| **Son kullanılan** | Son seçilen HTML ve çıktı klasörü ile PDF tercihleri saklanır. |
-| **Sonuç listesi** | Her dosya için başarı veya hata mesajı tabloda gösterilir. |
+| **Son kullanılan** | Son seçilen klasörler ve PDF tercihleri saklanır. |
+| **Sonuç listesi** | Her dosya için başarı veya hata mesajı gösterilir. |
+| **Temizleyicide aç** | Dönüştürülen PDF'ler tek tıkla PDF Temizle sekmesinde açılır. |
+
+#### PDF Temizle
+
+| Özellik | Açıklama |
+|--------|----------|
+| **Watermark bulma** | PDF watermark açıklamaları, "watermark" olarak etiketlenmiş içerik (Acrobat, Word), adı watermark/filigran olan katmanlar ve sayfaların çoğunda tekrarlanan soluk, eğik ya da büyük yazı/görseller. PDF programlarının göremediği, sayfaya sıradan çizim olarak gömülmüş watermark'lar da bulunur. |
+| **Tekrarlanan öğeler** | Sayfaların çoğunda aynı yerde duran logolar ve üst/alt kenardaki başlık, altbilgi, marka yazıları. |
+| **Önizleme** | Bulunan öğe sayfada çerçeveyle gösterilir; "Sonra" görünümü sonucu kaydetmeden gösterir. |
+| **Yazı değiştirme** | Tekrarlanan yazının yerine aynı konum, boyut ve renkte yeni metin yazılır; sayfadaki herhangi bir yazı da bul/değiştir ile değiştirilebilir. |
+| **Klasör modu** | Bir PDF'te yapılan seçimler aynı kaynaktan gelen diğer PDF'lere de uygulanır. |
+| **Şifreli PDF** | Şifre sorulur. |
+
+Kesin watermark'lar işaretli gelir; logo ve başlık gibi "olası" öğeleri siz onaylarsınız. Taranmış PDF'lerde watermark sayfa görüntüsünün parçası olduğundan silinemez.
 
 #### Gereksinimler
 
@@ -39,23 +56,35 @@
 #### Kurulum ve çalıştırma
 
 ```bash
-git clone https://github.com/KULLANICI_ADIN/convert-html2pdf.git
-cd convert-html2pdf
+git clone https://github.com/tahirkoca/pdf-editor.git
+cd pdf-editor
 dotnet restore
-dotnet run --project ConvertHtml2Pdf
+dotnet run --project PdfEditor
 ```
 
-> İlk çalıştırmada PuppeteerSharp Chromium indirir (~150 MB); sonraki dönüştürmeler hızlıdır.
+> İlk HTML dönüştürmesinde PuppeteerSharp Chromium indirir (~150 MB); sonraki dönüştürmeler hızlıdır.
+
+Bir PDF doğrudan da açılabilir: `PdfEditor.exe dosya.pdf`
+
+#### Testler
+
+```bash
+dotnet test
+```
 
 #### Proje yapısı
 
 ```
-convert-html2pdf/
-├── ConvertHtml2Pdf.sln
-└── ConvertHtml2Pdf/
-    ├── App.xaml, MainWindow.xaml
-    ├── Models/          # PdfConversionOptions, ConversionResult
-    └── Services/        # HtmlToPdfService, AppSettingsService
+pdf-editor/
+├── PdfEditor.sln
+├── PdfEditor/            # WPF uygulaması
+│   ├── MainWindow.xaml   # İki sekmeli ana pencere
+│   ├── Views/            # HtmlToPdfView, CleanerView
+│   └── Services/         # AppSettingsService
+├── PdfEditor.Core/       # Arayüzden bağımsız motor
+│   ├── Html/             # HtmlToPdfService
+│   └── Cleaning/         # ContentStream, ContentWalker, Analyzer, PdfCleaner
+└── PdfEditor.Tests/      # xUnit testleri
 ```
 
 </td>
@@ -63,17 +92,34 @@ convert-html2pdf/
 
 ### 🇬🇧 English
 
-**HTML → PDF Converter** is a desktop app that converts HTML files to PDF. It uses WPF with Fluent Design (WPF-UI) for a Windows 11–style UI and PuppeteerSharp (headless Chromium) for rendering.
+**PDF Editor** is a desktop app that combines two tools in one window:
 
-#### Features
+- **HTML → PDF**: converts HTML files to PDF with PuppeteerSharp (headless Chromium).
+- **PDF Clean**: finds watermarks, logos repeated across pages and repeated header/footer text in any PDF, then removes or rewrites what you select. The original file is never modified.
+
+#### HTML → PDF
 
 | Feature | Description |
 |--------|-------------|
 | **Batch conversion** | Select a single file or folder to convert all `.html` / `.htm` files to PDF. |
-| **Drag & drop** | Drop a file or folder onto the window to set the source. |
+| **Drag & drop** | Drop a file or folder onto the window. |
 | **PDF settings** | Page size (A4, Letter, A3, A5, Legal), margin (0.5–2 cm), landscape. |
-| **Remember paths** | Last used HTML path, output folder, and PDF preferences are saved. |
-| **Result list** | Per-file success or error message is shown in a table. |
+| **Remember paths** | Last used folders and PDF preferences are saved. |
+| **Result list** | Per-file success or error message. |
+| **Open in cleaner** | Converted PDFs open in the PDF Clean tab with one click. |
+
+#### PDF Clean
+
+| Feature | Description |
+|--------|-------------|
+| **Watermark detection** | PDF watermark annotations, content tagged as watermark (Acrobat, Word), layers named watermark, and faint, rotated or large text/images repeated on most pages. Watermarks embedded as ordinary drawings, which PDF viewers cannot see as watermarks, are found too. |
+| **Repeated items** | Logos at the same spot on most pages and header, footer or brand text in the page margins. |
+| **Preview** | The selected item is outlined on the page; the "After" view shows the result before saving. |
+| **Text replacement** | Repeated text can be rewritten at the same position, size and colour; any text can be changed with find/replace. |
+| **Folder mode** | Selections made on one PDF are applied to other PDFs from the same source. |
+| **Encrypted PDFs** | Asks for the password. |
+
+Certain watermarks are pre-selected; "possible" items such as logos and headers need your confirmation. In scanned PDFs the watermark is part of the page image and cannot be removed.
 
 #### Requirements
 
@@ -83,23 +129,35 @@ convert-html2pdf/
 #### Setup and run
 
 ```bash
-git clone https://github.com/USERNAME/convert-html2pdf.git
-cd convert-html2pdf
+git clone https://github.com/tahirkoca/pdf-editor.git
+cd pdf-editor
 dotnet restore
-dotnet run --project ConvertHtml2Pdf
+dotnet run --project PdfEditor
 ```
 
-> On first run, PuppeteerSharp downloads Chromium (~150 MB); subsequent conversions are fast.
+> On the first HTML conversion PuppeteerSharp downloads Chromium (~150 MB); subsequent conversions are fast.
+
+A PDF can also be opened directly: `PdfEditor.exe file.pdf`
+
+#### Tests
+
+```bash
+dotnet test
+```
 
 #### Project structure
 
 ```
-convert-html2pdf/
-├── ConvertHtml2Pdf.sln
-└── ConvertHtml2Pdf/
-    ├── App.xaml, MainWindow.xaml
-    ├── Models/          # PdfConversionOptions, ConversionResult
-    └── Services/        # HtmlToPdfService, AppSettingsService
+pdf-editor/
+├── PdfEditor.sln
+├── PdfEditor/            # WPF app
+│   ├── MainWindow.xaml   # Main window with two tabs
+│   ├── Views/            # HtmlToPdfView, CleanerView
+│   └── Services/         # AppSettingsService
+├── PdfEditor.Core/       # UI independent engine
+│   ├── Html/             # HtmlToPdfService
+│   └── Cleaning/         # ContentStream, ContentWalker, Analyzer, PdfCleaner
+└── PdfEditor.Tests/      # xUnit tests
 ```
 
 </td>
@@ -109,5 +167,5 @@ convert-html2pdf/
 ---
 
 <p align="center">
-  <sub><strong>Lisans / License</strong> — MIT</sub>
+  <sub><strong>Lisans / License</strong> — AGPL-3.0 (PDF işleme MuPDF.NET ile yapılır / PDF processing uses MuPDF.NET)</sub>
 </p>

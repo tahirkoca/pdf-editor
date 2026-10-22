@@ -4,9 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using PuppeteerSharp;
 using PuppeteerSharp.Media;
-using ConvertHtml2Pdf.Models;
 
-namespace ConvertHtml2Pdf.Services;
+namespace PdfEditor.Core.Html;
 
 /// <summary>
 /// Converts HTML files to PDF using headless Chromium (PuppeteerSharp).

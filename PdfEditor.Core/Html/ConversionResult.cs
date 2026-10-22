@@ -1,4 +1,4 @@
-namespace ConvertHtml2Pdf.Models;
+namespace PdfEditor.Core.Html;
 
 /// <summary>
 /// Tek dosya dönüştürme sonucu (log satırı).
